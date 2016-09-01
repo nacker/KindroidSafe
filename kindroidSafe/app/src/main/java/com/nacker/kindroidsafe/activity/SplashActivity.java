@@ -1,4 +1,4 @@
-package com.nacker.kindroidsafe.com.nacker.kindroidsafe.activity;
+package com.nacker.kindroidsafe.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

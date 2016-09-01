@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/launcher_bg"
-    tools:context=".com.nacker.kindroidsafe.activity.SplashActivity">
+    tools:context=".activity.SplashActivity">
 
     <!--shadowRadius 阴影所在范围-->
     <TextView
