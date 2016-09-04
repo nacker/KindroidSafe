@@ -7,8 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        // 去头的同时,还保留高版本的样式
+        <!--去头的同时,还保留高版本的样式-->
         <item name="windowNoTitle">true</item>
+
     </style>
 
 </resources>
