@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.nacker.kindroidsafe.utils.ToastUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -82,37 +84,6 @@ public class SplashActivity extends Activity {
         }
     };
 
-    /**
-     * 弹出对话框,提示用户更新
-     */
-    private void showUpdateDialog() {
-        // 对话框,是依赖Activity存在的
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // 设置左上角的图标
-        builder.setIcon(R.drawable.ic_launcher);
-        builder.setTitle("版本更新");
-        // 设置描述内容
-        builder.setMessage(mVersionDes);
-
-        builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // 下载APK
-            };
-        });
-
-        builder.setNegativeButton("稍后在说", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // 取消对话框,进入主界面
-                enterHome();
-
-            }
-        });
-
-        builder.show();
-    }
-
     //requestWindowFeature(Window.FEATURE_NO_TITLE); 去除当前Activity头Title
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,8 +128,63 @@ public class SplashActivity extends Activity {
         checkVersion();
     }
 
+    /**
+     * 弹出对话框,提示用户更新
+     */
+    protected void showUpdateDialog() {
+        // 对话框,是依赖Activity存在的
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // 设置左上角的图标
+        builder.setIcon(R.drawable.ic_launcher);
+        builder.setTitle("版本更新");
+        // 设置描述内容
+        builder.setMessage(mVersionDes);
+
+        builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // 下载APK
+                downloadApk();
+            };
+        });
+
+        builder.setNegativeButton("稍后在说", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // 取消对话框,进入主界面
+                enterHome();
+
+            }
+        });
+
+        //点击取消事件监听
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                //即使用户点击取消,也需要让其进入应用程序主界面
+                enterHome();
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
+    protected void downloadApk() {
+        // apk下载地址,放置apk的所在路径
+
+        // 1.判断sd卡是否可用,是否挂在上
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            // 2.获取sdk路径
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "kindroidSafe.apk";
+
+            //3,发送请求,获取apk,并且放置到指定路径
+//            new HttpUtils();
+        }
+    }
+
     // 进入应用主界面
-    private void enterHome() {
+    protected void enterHome() {
         Intent intent = new Intent(this, HomeAcivity.class);
         startActivity(intent);
         //在开启一个新的界面后,将导航界面关闭(导航界面只可见一次)
@@ -251,7 +277,6 @@ public class SplashActivity extends Activity {
             };
         }.start();
 
-        new  Thread();
     }
 
 

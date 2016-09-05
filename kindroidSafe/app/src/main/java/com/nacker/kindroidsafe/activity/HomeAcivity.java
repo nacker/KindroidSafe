@@ -15,5 +15,7 @@ public class HomeAcivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
+
+//        x.Ext.init(this);
     }
 }
