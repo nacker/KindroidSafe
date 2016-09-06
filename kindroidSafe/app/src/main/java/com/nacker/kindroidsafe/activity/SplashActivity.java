@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -20,6 +21,9 @@ import com.nacker.kindroidsafe.utils.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +31,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+
 
 /**
  * Created by nacker on 16/9/4.
@@ -96,6 +102,8 @@ public class SplashActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
 
+        x.view().inject(this);
+
         // 初始化UI
         initUI();
 
@@ -140,6 +148,7 @@ public class SplashActivity extends Activity {
         // 设置描述内容
         builder.setMessage(mVersionDes);
 
+        // 立即更新
         builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -148,6 +157,7 @@ public class SplashActivity extends Activity {
             };
         });
 
+        // 稍后在说
         builder.setNegativeButton("稍后在说", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -179,8 +189,99 @@ public class SplashActivity extends Activity {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "kindroidSafe.apk";
 
             //3,发送请求,获取apk,并且放置到指定路径
-//            new HttpUtils();
+            RequestParams params = new RequestParams(mDownloadUrl);
+            //设置断点续传
+            params.setAutoResume(true);
+            params.setSaveFilePath(path);
+
+//            params.setSaveFilePath(Environment.getExternalStorageDirectory()+"/app");
+
+
+            x.http().post(params, new Callback.ProgressCallback<File>() {
+
+
+                @Override
+                public void onSuccess(File result) {
+
+                    Log.i(tag,"下载成功---");
+                    File file = result;
+
+                    // 提示用户安装
+                    installApk(file);
+                }
+
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+                    Log.i(tag,"下载失败---");
+                }
+
+                @Override
+                public void onCancelled(CancelledException cex) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+
+                @Override
+                public void onWaiting() {
+
+                }
+
+                @Override
+                public void onStarted() {
+
+                }
+
+                /**
+                 * @param total 下载APK总大小
+                 * @param current 当前下载位置
+                 * @param isDownloading 是否正在下载
+                 */
+                @Override
+                public void onLoading(long total, long current, boolean isDownloading) {
+
+                    Log.i(tag,"下载中---");
+
+                    Log.i("nacker","current<<"+current + "total<<"+total);
+                }
+            });
+
         }
+    }
+
+
+    /**
+     * 安装APK
+     * @param file 文件路径
+     */
+    protected void installApk(File file) {
+        //系统应用界面,源码,安装apk入口
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+		/*//文件作为数据源
+		intent.setData(Uri.fromFile(file));
+		//设置安装的类型
+		intent.setType("application/vnd.android.package-archive");*/
+
+        intent.setDataAndType(Uri.fromFile(file),"application/vnd.android.package-archive");
+        //startActivity(intent);
+        startActivityForResult(intent, 0);
+    }
+
+    /**
+     * 开启一个Activity后,返回结果调用方法
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        enterHome();
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // 进入应用主界面
