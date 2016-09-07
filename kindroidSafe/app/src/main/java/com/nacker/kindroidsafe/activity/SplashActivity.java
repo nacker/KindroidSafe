@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nacker.kindroidsafe.R;
@@ -60,6 +62,9 @@ public class SplashActivity extends Activity {
     private int mLocalVersionCode;
     private String mVersionDes;
     private String mDownloadUrl;
+
+
+    RelativeLayout rl_root;
 
     private Handler mHandler = new Handler(){
         @Override
@@ -109,11 +114,26 @@ public class SplashActivity extends Activity {
 
         // 初始化数据
         initData();
+
+        // 初始化动画
+        initAnimation();
+    }
+
+    /**
+     * 添加淡入的动画效果
+     */
+    private void initAnimation() {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0,1);
+        alphaAnimation.setDuration(3000);
+
+        rl_root.startAnimation(alphaAnimation);
     }
 
     // 初始化UI
     private void initUI(){
         textView = (TextView)findViewById(R.id.tv_version_name);
+
+        rl_root = (RelativeLayout) findViewById(R.id.rl_root);
 
 
     }
