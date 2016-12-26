@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_setting"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.nacker.kindroidsafe.activity.SettingActivity">
+
+    <TextView
+        style="@style/TitleStyle"
+        android:text="设置中心" />
+
+    <com.nacker.kindroidsafe.view.SettingItemView
+        android:id="@+id/siv_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        itheima:desc_off="自动更新已关闭"
+        itheima:desc_on="自动更新已开启"
+        itheima:title="自动更新设置"
+        />
+    
+</LinearLayout>

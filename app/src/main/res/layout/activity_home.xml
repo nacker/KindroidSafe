@@ -8,15 +8,19 @@
     tools:context="com.nacker.kindroidsafe.activity.HomeActivity">
 
 
+    <!--<TextView-->
+        <!--android:id="@+id/textView1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:background="#8866ff00"-->
+        <!--android:gravity="center"-->
+        <!--android:text="功能列表"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textSize="22sp" />-->
+
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#8866ff00"
-        android:gravity="center"
-        android:text="功能列表"
-        android:textColor="@color/black"
-        android:textSize="22sp" />
+        style="@style/TitleStyle"
+        android:text="功能列表" />
 
     <TextView
         android:layout_width="match_parent"

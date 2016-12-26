@@ -10,8 +10,7 @@
         android:id="@+id/iv_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/home_apps"
-        />
+        android:src="@drawable/home_apps" />
 
     <TextView
         android:id="@+id/tv_item"
@@ -20,7 +19,6 @@
         android:layout_marginTop="5dp"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:text="手机防盗"
-        />
+        android:text="手机防盗" />
 
 </LinearLayout>
